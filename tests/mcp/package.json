@@ -1,0 +1,13 @@
+{
+  "name": "wallaby-zed-mcp-fixture",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "verify": "node run-mcp-verify.mjs",
+    "verify:only": "node --test verify-mcp.mjs",
+    "fixture": "node --test test/math.test.js",
+    "activate:license": "node ../../scripts/activate-wallaby-license.mjs",
+    "wallaby:start": "wallaby --ui=false",
+    "wallaby:stop": "wallaby stop"
+  }
+}

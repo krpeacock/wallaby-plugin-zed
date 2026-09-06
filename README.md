@@ -65,6 +65,35 @@ cargo test
 ./scripts/check-mcp.sh
 ```
 
+## MCP verification suite
+
+`tests/mcp/` contains a small fixture project (a passing and a failing `node:test`
+test) plus a JavaScript suite that verifies the Wallaby MCP server **through the
+same stdio/MCP protocol Zed's agent uses**. It covers every tool with succeeding
+calls (passing tests, coverage, per-file/per-line queries, runtime values) and
+failing calls (failing tests with stack traces, unknown ids, invalid arguments).
+
+```sh
+cd tests/mcp
+npm run verify   # activates license, starts Wallaby, runs the MCP suite, cleans up
+```
+
+The suite needs Wallaby installed, and runtime-value tracing requires a licensed
+Wallaby.
+
+### License via `.env`
+
+The verifier (and the extension's local workflow) can accept a Wallaby license
+from the repo `.env` (gitignored):
+
+```
+WALLABY_LICENSE=your-license-key
+WALLABY_LICENSE_EMAIL=you@example.com
+```
+
+`npm run verify` writes the key to `~/.wallaby/key.lic` (backing up any existing
+file first), so the local Wallaby core runs fully licensed. See `.env.example`.
+
 ## Roadmap
 
 - [x] MVP: MCP server connects inside Zed's agent panel

@@ -1,0 +1,5 @@
+{
+  // Absolute path to the Wallaby MCP server entry script (e.g. ~/.wallaby/mcp).
+  // Leave unset to auto-detect the server.
+  "mcp_entry": null
+}

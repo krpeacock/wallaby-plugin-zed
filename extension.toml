@@ -1,0 +1,19 @@
+id = "wallaby"
+name = "Wallaby"
+description = "Model Context Protocol server for Wallaby.js: real-time test results, runtime values, execution paths and coverage for AI agents."
+version = "0.1.0"
+schema_version = 1
+authors = ["Priestess Kaia <kaia@localhost>"]
+repository = "https://github.com/kaia/wallaby-zed"
+
+[lib]
+kind = "Rust"
+version = "0.7.0"
+
+[[capabilities]]
+kind = "process:exec"
+command = "sh"
+args = ["-c", "*"]
+
+[context_servers.wallaby]
+name = "Wallaby"

@@ -13,8 +13,15 @@ tests, stack traces, coverage, execution paths and runtime values.
 - Declares a **Wallaby** context server (MCP).
 - Launches the Wallaby MCP server (`node ~/.wallaby/mcp`, falling back to the
   bundled `~/.wallaby/cli/<hash>/mcp/index.js`).
+- **Auto-starts a headless Wallaby instance** on the project when the context
+  server connects (and stops it when the server is removed — the launcher keeps
+  Wallaby in the context server's process group, which Zed group-kills on
+  teardown). Idempotent: an already-running Wallaby on the project is reused.
 - Auto-detects the server entry point, with an optional `wallaby.mcp_entry`
-  setting override.
+  setting override; auto-start can be disabled with `wallaby.auto_start`.
+
+Lifecycle is handled by `scripts/wallaby-manage.mjs`, which the launcher invokes
+with the project root as its working directory.
 
 ## Requirements
 
@@ -32,9 +39,10 @@ tests, stack traces, coverage, execution paths and runtime values.
 
 ## Settings
 
-| Key                        | Type   | Description                                                   |
-| -------------------------- | ------ | ------------------------------------------------------------- |
-| `context_servers.wallaby.mcp_entry` | string | Optional absolute path to the Wallaby MCP server entry script. |
+| Key                        | Type    | Description                                          |
+| -------------------------- | ------- | ---------------------------------------------------- |
+| `context_servers.wallaby.mcp_entry` | string  | Optional absolute path to the Wallaby MCP server entry script. |
+| `context_servers.wallaby.auto_start` | boolean | Auto-start a headless Wallaby on the project (default `true`). Set `false` if you start Wallaby yourself. |
 
 Example `settings.json`:
 
@@ -42,7 +50,8 @@ Example `settings.json`:
 {
   "context_servers": {
     "wallaby": {
-      "mcp_entry": "/Users/you/.wallaby/mcp"
+      "mcp_entry": "/Users/you/.wallaby/mcp",
+      "auto_start": false
     }
   }
 }
@@ -75,7 +84,8 @@ failing calls (failing tests with stack traces, unknown ids, invalid arguments).
 
 ```sh
 cd tests/mcp
-npm run verify   # activates license, starts Wallaby, runs the MCP suite, cleans up
+npm run verify           # license -> auto-start -> MCP suite -> cleanup
+npm run verify:autostop  # launcher starts Wallaby; killpg teardown stops it
 ```
 
 The suite needs Wallaby installed, and runtime-value tracing requires a licensed
@@ -97,7 +107,7 @@ file first), so the local Wallaby core runs fully licensed. See `.env.example`.
 ## Roadmap
 
 - [x] MVP: MCP server connects inside Zed's agent panel
-- [ ] Start / manage the Wallaby instance from the extension
+- [x] Auto-start/auto-stop a headless Wallaby with the context server
 - [ ] Inline test result decorations
 - [ ] Test panel / tree integration
 

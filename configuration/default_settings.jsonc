@@ -1,5 +1,8 @@
 {
   // Absolute path to the Wallaby MCP server entry script (e.g. ~/.wallaby/mcp).
   // Leave unset to auto-detect the server.
-  "mcp_entry": null
+  "mcp_entry": null,
+  // Start a headless Wallaby instance on the project when the context server
+  // launches (default: true). Set to false if you start Wallaby yourself.
+  "auto_start": true
 }

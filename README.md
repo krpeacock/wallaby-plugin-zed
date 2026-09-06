@@ -59,6 +59,10 @@ cargo build --release --target wasm32-wasip2
 
 # Run unit tests (resolution logic + settings)
 cargo test
+
+# Verify the Wallaby MCP server starts and answers the MCP handshake
+# (the MVP acceptance check: "get the MCP running"). Requires Wallaby installed.
+./scripts/check-mcp.sh
 ```
 
 ## Roadmap
